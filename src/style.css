@@ -1,0 +1,209 @@
+/* Portfolio Hub – Palette Americana. Formen aus der Wall-Formensprache (Pillen, LiftedCard), nicht deren Farben.
+   Bewusst nur dunkel. Maßeinheit in den Ordnern ist em, relativ zur Elementgröße (font-size = Breite in Feldern × 9px). */
+:root{
+  --ground:#1B1B1D;
+  --holder:#2C2D33;
+  --rail:#0E0E10;
+  --grid:rgba(232,216,201,.07);
+  --grid-major:rgba(232,216,201,.17);
+  --signal:#F3701E;        /* Seitenstreifen der Kartei */
+  --blue:#4B607F;          /* Schublade */
+  --label:#F3701E;         /* Beschriftung, Kuratiert-Reiter */
+  --ink:#E8D8C9;
+  --muted:#9C9488;
+  /* Projektfarben (Slots) – in project.json als "color": "grise" usw. */
+  --c-orange:#E8D8C9; --c-moutarde:#D8C4B0; --c-terra:#F3701E; --c-avocat:#C4581A; --c-olive:#8FA0B8; --c-roi:#2F3D52;
+  --c-grise:#4B607F; --c-violet:#3A4A63; --c-magenta:#E0601A; --c-rose:#F59A5E; --c-beige:#B8A898;
+  --f:'Tw Cen MT','Jost','Century Gothic',Arial,sans-serif;
+  --rule:26px;             /* Lineal-Dicke */
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}   /* sonst überschreibt z. B. .room{display:flex} das hidden-Attribut */
+html,body{height:100%;margin:0}
+body{background:var(--ground);color:var(--ink);font-family:var(--f);overflow:hidden}
+button{font:inherit;color:inherit}
+
+/* ---------- Bühne: unendliches Raster ---------- */
+.stage{position:fixed;inset:0;overflow:hidden;touch-action:none;cursor:grab;
+  background-color:var(--ground);
+  background-image:
+    linear-gradient(var(--grid-major) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid-major) 1px,transparent 1px),
+    linear-gradient(var(--grid) 1px,transparent 1px),
+    linear-gradient(90deg,var(--grid) 1px,transparent 1px)}
+.stage.dragging{cursor:grabbing}
+.world{position:absolute;left:0;top:0;width:0;height:0;transform-origin:0 0;will-change:transform}
+
+/* ---------- Lineale (immer über dem Inhalt) ---------- */
+.rule{position:fixed;z-index:12;display:block;background:transparent;pointer-events:none}
+.rule-top{left:0;right:0;top:0;height:calc(var(--rule) + env(safe-area-inset-top,0px));width:100%}
+.rule-left{left:0;top:0;bottom:0;width:calc(var(--rule) + env(safe-area-inset-left,0px));height:100%}
+.rule-corner{position:fixed;z-index:13;left:0;top:0;width:calc(var(--rule) + env(safe-area-inset-left,0px));height:calc(var(--rule) + env(safe-area-inset-top,0px));
+  background:transparent;color:var(--muted);display:flex;align-items:flex-end;justify-content:flex-end;padding:0 3px 5px 0;
+  font:700 9px/1 var(--f);font-variant-numeric:tabular-nums;pointer-events:none}
+
+/* ---------- Ordner = LiftedCard, unten angehoben ---------- */
+.item{position:absolute;font-size:calc(var(--w) * 9px);cursor:zoom-in;outline:none;transition:opacity .5s}
+.item.dim{opacity:.3}
+.item.focused{cursor:pointer}
+.lifted{position:absolute;inset:0;background:var(--rail);border-radius:.2em}
+.item{--h:var(--holder)}
+.item:not(.focused):hover{--h:color-mix(in srgb,var(--holder) 86%,var(--ink))}
+.body{position:absolute;left:0;right:0;top:0;bottom:.1em;padding-top:.09em;background:var(--h);border-radius:inherit;overflow:hidden;display:flex;flex-direction:column;transition:background .2s}
+/* Ordner mit Reiter: die Ecke unter dem Reiter ist eckig, Reiter und Körper bilden eine Silhouette */
+.haupt .lifted,.klein .lifted{border-top-left-radius:0}
+.item:focus-visible .lifted{box-shadow:0 0 0 3px var(--label)}
+/* Reiter: gleicher Radius wie der Ordner (.2em Item = .83em Reiter), rechts eine konkave Hohlkehle */
+.tab{--tabc:var(--h);position:absolute;left:0;bottom:100%;font-size:.24em;height:2.1em;padding:0 1.1em;display:flex;align-items:center;gap:.9em;
+  background:var(--tabc);border-radius:.83em .83em 0 0;color:var(--muted);font-weight:700;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;transition:background .2s}
+.tab::after{content:"";position:absolute;left:100%;bottom:0;width:.83em;height:.83em;
+  background:radial-gradient(circle at 100% 0,transparent .83em,var(--tabc) calc(.83em + .5px))}
+.item.cur .tab{--tabc:var(--label);color:var(--ground)}
+.tab .tk{opacity:.7}
+/* Deckblatt: volle Breite, oben gerundet, unten eckig. Coverbild liegt über der Projektfarbe. */
+.cover{flex:0 0 44%;position:relative;background-color:var(--cv);color:var(--ci);display:flex;align-items:flex-end;padding:.2em .3em;border-radius:.2em .2em 0 0;
+  background-size:cover;background-position:center}
+.glyph{font-weight:700;font-size:.62em;line-height:1;letter-spacing:.02em;transition:font-size .4s}
+.probe:not(.lod1) .glyph{font-size:2.5em}
+.meta{flex:1;min-height:0;padding:.26em .3em .24em;display:flex;flex-direction:column;gap:.14em}
+.title{font-weight:700;font-size:.74em;line-height:.92;text-wrap:balance}
+.tagl{font-size:.3em;line-height:1.28;color:var(--muted);max-width:34em;text-wrap:pretty}
+.foot{margin-top:auto;display:flex;justify-content:space-between;align-items:flex-end;gap:.4em}
+.chapters{display:flex;flex-wrap:wrap;gap:.25em;font-size:.19em;min-width:0}
+.chip{border:.14em solid var(--muted);border-radius:999px;padding:.2em .85em;white-space:nowrap;text-transform:uppercase;letter-spacing:.06em;font-weight:700}
+.open{flex:none;font-size:.22em;font-weight:700;letter-spacing:.07em;text-transform:uppercase;background:var(--ink);color:var(--ground);border:0;border-radius:999px;padding:.6em 1.2em;cursor:pointer}
+.open:focus-visible{outline:2px solid var(--label);outline-offset:2px}
+/* Semantischer Zoom: Details erscheinen nach Bildschirmbreite des Elements (siehe updateLOD) */
+.title,.tagl,.foot{opacity:0;transition:opacity .35s}
+.foot{pointer-events:none}
+.lod1 .title{opacity:1}
+.lod2 .tagl{opacity:1}
+.lod3 .foot{opacity:1;pointer-events:auto}
+
+/* Schublade mit Spaltenkopf-Pille */
+.drawer{background:var(--blue);border-radius:.2em}
+.dhead{position:absolute;left:.26em;right:.26em;top:.22em;font-size:.28em;height:1.9em;padding:0 1em;display:flex;justify-content:space-between;align-items:center;gap:.6em;
+  border:.13em solid var(--ground);border-radius:999px;color:var(--ground);font-weight:700;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap}
+.dsub{position:absolute;left:1.6em;top:4.4em;font-size:.2em;color:var(--ground);font-weight:500}
+
+/* freier Platz: tritt zurück */
+.slot{border:.04em dashed var(--grid-major);border-radius:.2em;display:grid;place-items:center;text-align:center;color:var(--muted)}
+.slot .plus{font-weight:400;font-size:1.3em;line-height:1}
+.slot .stxt{font-size:.17em;line-height:1.4;letter-spacing:.06em;text-transform:uppercase;font-weight:700;opacity:0;transition:opacity .35s}
+.slot.lod1 .stxt{opacity:1}
+
+/* About-Karte */
+.about{display:flex;flex-direction:column;gap:.12em;padding-top:.04em}
+.about .ph{align-self:flex-start;font-size:.24em;height:1.9em;padding:0 1em;display:flex;align-items:center;border:.13em solid var(--label);border-radius:999px;color:var(--label);font-weight:700;letter-spacing:.07em;text-transform:uppercase}
+.about b{font-weight:700;font-size:1em;line-height:.9;color:var(--label)}
+.about p{margin:0;font-size:.26em;line-height:1.3;color:var(--muted);max-width:30em}
+
+/* ---------- Leiste ---------- */
+.bar{position:fixed;z-index:11;top:calc(var(--rule) + env(safe-area-inset-top,0px));left:calc(var(--rule) + env(safe-area-inset-left,0px));right:0;
+  display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:54px;padding-top:6px;
+  padding-left:14px;padding-right:max(16px,env(safe-area-inset-right,0px));pointer-events:none}
+.bar>*{pointer-events:auto}
+/* Logo: Höhe = ein Rasterfeld der Übersicht, wird in sizeLogo() gesetzt */
+.brand{--logo-h:76px;flex:none;align-self:flex-start;height:var(--logo-h);padding:0;border:0;background:none;color:var(--ink);cursor:pointer;display:block;transition:height .2s}
+.brand svg{height:100%;width:auto;display:block;fill:currentColor}
+.brand:hover,.brand:focus-visible{color:var(--label);outline:none}
+.pill{font-size:12.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;white-space:nowrap;height:30px;padding:0 13px;
+  border:2px solid var(--muted);border-radius:999px;background:var(--ground);color:var(--ink);cursor:pointer;display:inline-flex;align-items:center}
+.pill:hover,.pill:focus-visible{border-color:var(--ink);outline:none}
+.pill.on{background:var(--ink);border-color:var(--ink);color:var(--ground)}
+.crumbs{min-width:0;display:flex;align-items:center;justify-content:flex-end;gap:6px;overflow:hidden}
+.right{flex:1;min-width:0;display:flex;align-items:center;justify-content:flex-end;gap:12px}
+
+/* ---------- Legende ---------- */
+.legend{position:fixed;z-index:11;left:calc(var(--rule) + env(safe-area-inset-left,0px));right:0;bottom:0;display:flex;flex-wrap:wrap;align-items:center;gap:6px 18px;
+  padding:10px max(16px,env(safe-area-inset-right,0px)) max(10px,env(safe-area-inset-bottom,0px)) 14px;
+  font-size:12px;font-weight:500;color:var(--muted);background:var(--ground);pointer-events:none}
+.lg{display:flex;align-items:center;gap:7px;white-space:nowrap}
+.sq{background:var(--ink);border-radius:2px}
+.mini{height:9px;width:22px;border-radius:4px 4px 0 0;background:var(--label)}
+.mini.o{background:color-mix(in srgb,var(--holder) 70%,var(--ink))}
+.hint{color:var(--ink)}
+
+/* ---------- Index ---------- */
+.list{position:fixed;top:0;right:0;bottom:0;z-index:20;width:min(380px,100%);overflow-y:auto;background:var(--ground);border-left:1px solid var(--grid-major);
+  padding:calc(20px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) 32px 20px}
+.list .lhead{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.list h2{font-weight:700;font-size:30px;margin:0;text-transform:uppercase;letter-spacing:.03em;color:var(--label)}
+.list h3{display:inline-flex;align-items:center;height:26px;padding:0 12px;border:2px solid var(--muted);border-radius:999px;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:22px 0 6px}
+.list ul{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.list li button{width:100%;text-align:left;background:none;border:0;border-radius:999px;padding:8px 12px;cursor:pointer;display:flex;align-items:center;gap:10px}
+.list li button:hover,.list li button:focus-visible{background:var(--holder);outline:none}
+.list li i{flex:none;width:12px;height:12px;border-radius:50%;background:var(--c)}
+.list li b{font-weight:700;font-size:16px;flex:1}
+.list li span{font-size:12px;color:var(--muted);white-space:nowrap}
+.list li .k{color:var(--label)}
+
+/* ---------- Projektkartei: Seitenstreifen vom Hub, rechts die eigene Seite des Projekts ---------- */
+.room{position:fixed;inset:0;z-index:30;display:flex;clip-path:inset(0)}
+.room.anim{transition:clip-path .6s cubic-bezier(.62,0,.2,1)}
+.room-edge{flex:none;width:calc(52px + env(safe-area-inset-left,0px));padding-left:env(safe-area-inset-left,0px);background:var(--signal);
+  display:flex;flex-direction:column;align-items:center;gap:10px;padding-top:calc(12px + env(safe-area-inset-top,0px));padding-bottom:12px;overflow-y:auto}
+.room-edge button{flex:none;writing-mode:vertical-rl;transform:rotate(180deg);font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  border-radius:999px;padding:14px 7px;cursor:pointer;white-space:nowrap}
+.room-edge button:focus-visible{outline:2px solid var(--ground);outline-offset:3px}
+#roomBack{background:var(--ground);color:var(--ink);border:0}
+.rpdf{flex:none;writing-mode:vertical-rl;transform:rotate(180deg);font-size:12px;font-weight:700;letter-spacing:.08em;color:var(--ground);text-decoration:none;border:2px solid var(--ground);border-radius:999px;padding:10px 5px}
+.rpdf:focus-visible{outline:2px solid var(--ground);outline-offset:3px}
+.room-body:focus{outline:none}
+.room-edge .rc{font-size:11px;font-weight:700;color:var(--ground);writing-mode:vertical-rl;transform:rotate(180deg)}
+/* Kapitel: reine Schrift ohne Kontur. Das gelesene Kapitel trägt die dunkle Farbe der Hub-Pille. */
+.rnav{display:flex;flex-direction:column;align-items:center;gap:2px;margin-top:6px}
+.rnav button{background:transparent;color:var(--ink);border:0;padding:10px 7px;transition:color .2s}
+.rnav button.on{color:var(--ground)}
+.room-body{flex:1;min-width:0;position:relative;background:var(--r-bg,var(--ground))}
+.room-body iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block;background:transparent;opacity:0;transition:opacity .25s}
+.room-body iframe.ready{opacity:1}
+
+/* Seitenstreifen ausgeblendet ("strip": false): liegt links außerhalb, eine schmale orange Kante zeigt, wo er wartet */
+.room-hot{display:none}
+.room.nostrip .room-edge{position:absolute;left:0;top:0;bottom:0;z-index:3;transform:translateX(-100%);transition:transform .28s cubic-bezier(.3,0,.2,1)}
+.room.nostrip.peek .room-edge,.room.nostrip .room-edge:focus-within{transform:none}
+.room.nostrip .room-hot{display:block;position:absolute;left:0;top:0;bottom:0;width:14px;z-index:2;cursor:e-resize;
+  background:linear-gradient(90deg,var(--signal) 0 3px,transparent 3px)}
+
+/* ---------- Standard-Layout (Projekte ohne eigene Seite) ---------- */
+.layout{position:absolute;inset:0;overflow-y:auto;background:var(--lo-bg)}
+.lo-page{min-height:100%;background:var(--lo-bg);color:var(--lo-fg);font-family:var(--f)}
+.lo-wrap{max-width:1200px;margin:0 auto;padding:clamp(32px,6vw,72px) clamp(16px,4vw,48px) 120px clamp(16px,5vw,64px)}
+.lo-kicker{margin:0;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.65}
+.lo-title{font-size:clamp(44px,9vw,120px);line-height:.88;margin:.18em 0 .2em;font-weight:700;text-transform:uppercase;letter-spacing:-.01em;text-wrap:balance}
+.lo-lede{font-size:clamp(18px,2.2vw,24px);line-height:1.35;max-width:36ch;margin:0}
+.lo-text{max-width:62ch;margin-top:18px}
+.lo-text p{margin:0 0 .9em;line-height:1.55;opacity:.85}
+.lo-intro{margin-top:28px}
+.lo-sec{margin-top:clamp(56px,8vw,104px)}
+.lo-head{display:flex;align-items:baseline;gap:14px;border-top:1px solid color-mix(in srgb,var(--lo-fg) 25%,transparent);padding-top:16px}
+.lo-num{margin:0;font-size:12px;font-weight:700;letter-spacing:.1em;opacity:.6}
+.lo-head h2{margin:0;font-size:clamp(24px,3.2vw,38px);line-height:1;text-transform:uppercase}
+/* Bilder als Spalten: jedes behält sein Format, nichts wird beschnitten */
+.lo-grid{columns:var(--lo-cols);column-gap:clamp(12px,2vw,24px);margin-top:24px}
+.lo-fig{margin:0 0 clamp(12px,2vw,24px);break-inside:avoid}
+.lo-img{display:block;width:100%;height:auto;cursor:zoom-in}
+.lo-hint{margin:20px 0 0;padding:14px 18px;border:2px dashed color-mix(in srgb,var(--lo-fg) 40%,transparent);border-radius:16px;font-size:14px;opacity:.75}
+.lo-hint code{font-family:ui-monospace,Consolas,monospace;font-size:13px}
+
+.lightbox{position:fixed;inset:0;z-index:40;background:rgba(14,14,16,.94);display:grid;place-items:center;padding:24px;cursor:zoom-out;outline:none}
+.lightbox img{max-width:100%;max-height:100%;object-fit:contain}
+
+/* ---------- Sortiermodus (nur npm run dev) ---------- */
+body.editing .stage{cursor:default}
+body.editing .item.draggable{cursor:grab}
+body.editing .item.dragging{z-index:50 !important;opacity:.85;cursor:grabbing;transition:none;pointer-events:none}
+body.editing .item.drop .lifted,body.editing .slot.drop{box-shadow:0 0 0 .06em var(--label)}
+body.editing .slot.drop{border-color:var(--label)}
+body.editing .legend .hint{color:var(--label)}
+
+@media (max-width:700px){
+  .hint{display:none}
+  .lo-grid{columns:1}
+}
+@media (prefers-reduced-motion:reduce){
+  .room.anim{transition:none}
+  .room-body iframe,.room.nostrip .room-edge{transition:none}
+}

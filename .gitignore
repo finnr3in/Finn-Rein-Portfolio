@@ -1,0 +1,8 @@
+node_modules/
+dist/
+_archive/
+.DS_Store
+Thumbs.db
+desktop.ini
+.sync_*
+.nextcloudsync.log

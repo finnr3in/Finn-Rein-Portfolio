@@ -1,0 +1,9 @@
+{
+  "title": "Project Title",
+  "type": "project",
+  "curated": false,
+  "color": "olive",
+  "tag": "One sentence on what this is",
+  "chapters": ["Problem", "Process", "Result"],
+  "order": 10
+}

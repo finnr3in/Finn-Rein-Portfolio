@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>rekordbox → Serato</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap">
+<style>
+  /* Eigene Gestaltung dieses Projekts – unabhängig vom Portfolio. */
+  :root{ --bg:#2F3D52; --fg:#E8D8C9; --acc:#E8D8C9; }
+  *{ box-sizing:border-box }
+  body{ margin:0; background:var(--bg); color:var(--fg); font-family:'Tw Cen MT','Jost','Century Gothic',Arial,sans-serif }
+  .wrap{ max-width:1000px; margin:0 auto; padding:clamp(32px,6vw,72px) 16px 96px clamp(16px,5vw,64px) }
+  .kicker{ margin:0; font-size:12px; letter-spacing:.12em; text-transform:uppercase; opacity:.7 }
+  h1{ font-size:clamp(44px,10vw,128px); line-height:.88; margin:.18em 0 .22em; text-wrap:balance; font-weight:700;text-transform:uppercase }
+  
+  .lede{ font-size:clamp(18px,2.2vw,24px); line-height:1.35; max-width:36ch; margin:0 }
+  .chapters{ display:grid; gap:clamp(40px,6vw,72px); margin-top:clamp(48px,7vw,88px) }
+  section{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1.35fr); gap:clamp(18px,3vw,40px); align-items:start;
+    border-top:1px solid color-mix(in srgb,var(--fg) 25%,transparent); padding-top:18px }
+  .num{ margin:0 0 6px; font-size:12px; letter-spacing:.1em; text-transform:uppercase; color:var(--acc) }
+  h2{ font-size:clamp(24px,3.2vw,38px); margin:0 0 10px; line-height:1 }
+  section p.t{ margin:0; line-height:1.55; opacity:.8; max-width:48ch }
+  .fig{ aspect-ratio:4/3; border:1px solid var(--acc); display:grid; place-items:end start; padding:10px; font-size:11px;
+    background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--acc) 35%,transparent) 0 1px,transparent 1px 12px) }
+  @media (max-width:700px){ section{ grid-template-columns:minmax(0,1fr) } }
+</style>
+</head>
+<body>
+<main class="wrap">
+  <p class="kicker">Project</p>
+  <h1>rekordbox → Serato</h1>
+  <p class="lede">A converter that makes exported USB drives usable in Serato</p>
+  <div class="chapters">
+    <section data-chapter="Problem">
+      <div><p class="num">Chapter 1</p><h2>Problem</h2>
+      <p class="t">Space for this chapter: text, drawings, photos and models, designed by this project's own rules.</p></div>
+      <div class="fig"><span>Figure 1</span></div>
+    </section>
+    <section data-chapter="Tool">
+      <div><p class="num">Chapter 2</p><h2>Tool</h2>
+      <p class="t">Space for this chapter: text, drawings, photos and models, designed by this project's own rules.</p></div>
+      <div class="fig"><span>Figure 2</span></div>
+    </section>
+    <section data-chapter="Testing">
+      <div><p class="num">Chapter 3</p><h2>Testing</h2>
+      <p class="t">Space for this chapter: text, drawings, photos and models, designed by this project's own rules.</p></div>
+      <div class="fig"><span>Figure 3</span></div>
+    </section>
+  </div>
+</main>
+</body>
+</html>

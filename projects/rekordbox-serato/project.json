@@ -1,0 +1,14 @@
+{
+  "title": "rekordbox → Serato",
+  "type": "project",
+  "curated": true,
+  "color": "roi",
+  "tag": "A converter that makes exported USB drives usable in Serato",
+  "chapters": [
+    "Problem",
+    "Tool",
+    "Testing"
+  ],
+  "order": 1,
+  "stripes": "90deg"
+}

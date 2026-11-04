@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Finn Rein – Portfolio</title>
+<meta name="description" content="Product design portfolio of Finn Rein, Bauhaus-Universität Weimar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap">
+</head>
+<body>
+<div class="stage" id="stage"><div class="world" id="world"></div></div>
+
+<canvas class="rule rule-top" id="ruleTop" aria-hidden="true"></canvas>
+<canvas class="rule rule-left" id="ruleLeft" aria-hidden="true"></canvas>
+<div class="rule-corner" id="ruleCorner" aria-hidden="true"></div>
+
+<header class="bar">
+  <button class="brand" id="brand" type="button" aria-label="Finn Rein – back to overview"><svg viewBox="317.9 239.4 369.1 521.2" aria-hidden="true"><g transform="translate(-971.559 0)"><path d="M1459.484,760.505L1289.469,760.505L1289.469,239.469L1506.452,239.469L1506.452,362.451L1459.484,362.451L1459.484,485.433L1506.452,485.433L1506.452,557.295C1504.242,554.68 1501.916,552.15 1499.477,549.711C1487.921,538.154 1474.301,529.135 1459.484,523.012L1459.484,760.505Z"/><path d="M1658.48,608.415L1658.48,760.531L1535.498,760.531L1535.498,483.708C1562.449,477.182 1582.466,452.9 1582.466,423.943L1582.466,423.941C1582.466,394.984 1562.449,370.701 1535.498,364.176L1535.498,239.469L1535.499,239.469C1568.115,239.469 1599.396,252.426 1622.459,275.489C1645.523,298.553 1658.48,329.834 1658.48,362.451L1658.48,513.69L1613.937,513.69C1641.148,536.248 1658.48,570.308 1658.48,608.415Z"/></g></svg></button>
+  <div class="right">
+    <nav class="crumbs" id="crumbs" aria-label="Position in the hub"></nav>
+    <button class="pill" id="listBtn" type="button" aria-expanded="false" aria-controls="list">Index</button>
+  </div>
+</header>
+
+<div class="legend" aria-hidden="true">
+  <span class="lg"><i class="sq" style="width:16px;height:16px"></i>Main project 4×4</span>
+  <span class="lg"><i class="sq" style="width:8px;height:8px"></i>Project 2×2</span>
+  <span class="lg"><i class="sq" style="width:4px;height:4px"></i>Work sample 1×1</span>
+  <span class="lg"><i class="mini"></i>Orange tab = curated</span>
+  <span class="hint">Click or scroll: zoom in · Esc or click outside: zoom out · Drag: pan</span>
+</div>
+
+<aside class="list" id="list" hidden aria-label="All work as a list">
+  <div class="lhead"><h2>All work</h2><button class="pill" id="listClose" type="button">Close</button></div>
+  <div id="listBody"></div>
+</aside>
+
+<div class="room" id="room" hidden role="dialog" aria-modal="true" aria-label="Project file">
+  <div class="room-edge"><button id="roomBack" type="button">← Hub</button><span class="rc" id="roomCode"></span><a class="rpdf" id="roomPdf" href="#" target="_blank" rel="noopener" hidden>PDF ↗</a><nav class="rnav" id="roomNav" aria-label="Chapters"></nav></div>
+  <div class="room-body" id="roomBody" tabindex="-1"></div>
+  <div class="room-hot" id="roomHot" aria-hidden="true"></div>
+</div>
+
+<div class="lightbox" id="lightbox" hidden tabindex="-1" role="dialog" aria-label="Image"><img alt=""></div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

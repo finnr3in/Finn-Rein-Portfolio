@@ -1,0 +1,14 @@
+{
+  "title": "Free Project: School",
+  "type": "project",
+  "curated": false,
+  "color": "avocat",
+  "tag": "The start of a long-term project on the school system",
+  "chapters": [
+    "Question",
+    "Research",
+    "Outlook"
+  ],
+  "order": 2,
+  "stripes": "45deg"
+}

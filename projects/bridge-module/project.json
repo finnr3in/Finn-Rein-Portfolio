@@ -1,0 +1,15 @@
+{
+  "title": "Bridge Module",
+  "type": "main",
+  "curated": true,
+  "color": "terra",
+  "tag": "A bridge built from a single, repeating L-shaped block",
+  "chapters": [
+    "Module",
+    "Joinery",
+    "Prototypes",
+    "Bridge"
+  ],
+  "order": 2,
+  "stripes": "90deg"
+}

@@ -1,0 +1,15 @@
+{
+  "title": "Speech Wall",
+  "type": "main",
+  "curated": true,
+  "color": "grise",
+  "tag": "Real-time transcription of multilingual speech, projected into the room",
+  "chapters": [
+    "Idea",
+    "System",
+    "Space",
+    "Status"
+  ],
+  "order": 1,
+  "stripes": "180deg"
+}

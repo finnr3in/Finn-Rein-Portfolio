@@ -1,0 +1,15 @@
+{
+  "title": "Monitor Arm",
+  "type": "main",
+  "curated": false,
+  "color": "orange",
+  "tag": "An arm for monitor and laptop, built on the principle of the architect lamp",
+  "chapters": [
+    "Principle",
+    "Springs",
+    "Joints",
+    "Model"
+  ],
+  "order": 3,
+  "stripes": "135deg"
+}

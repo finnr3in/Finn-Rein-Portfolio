@@ -1,0 +1,11 @@
+{
+  "title": "Placeholder P5",
+  "type": "project",
+  "curated": false,
+  "color": "beige",
+  "tag": "Another smaller project goes here",
+  "order": 5,
+  "placeholder": true,
+  "background": "paper",
+  "columns": 2
+}
